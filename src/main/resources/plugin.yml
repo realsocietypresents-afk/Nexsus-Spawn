@@ -1,0 +1,21 @@
+name: NexusSpawn
+version: ${project.version}
+main: com.nexusuniverse.spawn.NexusSpawnPlugin
+api-version: '1.21'
+author: Nexus Universe
+description: A standalone, forceful protection zone around spawn -- blocks all building/breaking and any world-modifying action inside a configurable chunk radius, while still letting players use everyday amenities (doors, buttons, pressure plates, chests, ender chests, shulker boxes).
+
+commands:
+  nexusspawn:
+    description: NexusSpawn administration.
+    aliases: [nspawn]
+    usage: /nexusspawn <reload|bypass|status>
+    permission: nexusspawn.admin
+
+permissions:
+  nexusspawn.admin:
+    description: Manage NexusSpawn (reload config, check status).
+    default: op
+  nexusspawn.bypass:
+    description: Bypass the spawn protection zone entirely (build/break/interact freely).
+    default: op

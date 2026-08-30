@@ -1,0 +1,55 @@
+# NexusSpawn -- a standalone, forceful protection zone. Independent of any other Nexus plugin
+# (NexusRealms' own land-claim system, vanilla's spawn-protection gamerule, etc.) -- this is its
+# own always-on zone around one fixed center point, meant to guarantee spawn/hub areas can never
+# be built on or broken, regardless of what else is or isn't installed/configured elsewhere.
+#
+# Everyone (including operators) is protected by this UNLESS they hold nexusspawn.bypass -- see
+# the permissions section in plugin.yml. Adjust and run /nexusspawn reload to apply immediately.
+
+protection:
+  enabled: true
+
+  # leave blank ("") to use the server's first/default world
+  world: ""
+
+  # how far the zone extends from the center point, measured in CHUNKS (not blocks) using
+  # chessboard/square distance -- same "radius in chunks" convention NexusRealms already uses for
+  # its own spawn-protection zone, so a 300-chunk radius here is a 601x601 chunk square (300 each
+  # direction from the center chunk, inclusive).
+  radius-chunks: 300
+
+  center:
+    # true (default): use the world's own actual spawn point (World#getSpawnLocation) as the
+    # zone's center, whatever that currently is -- follows it automatically if it's ever moved.
+    # false: use the fixed x/z below instead, ignoring the world's spawn point entirely.
+    use-world-spawn: true
+    x: 0
+    z: 0
+
+  # what's still allowed for ordinary players INSIDE the zone, despite everything else being
+  # locked down -- these are all right-click/interact actions, never placing or breaking a block.
+  allow:
+    doors: true # doors, trapdoors, fence gates
+    buttons: true
+    pressure-plates: true
+    chests: true # chests, trapped chests, barrels
+    ender-chests: true
+    shulker-boxes: true
+
+  # block placement and breaking are ALWAYS denied inside the zone for anyone without bypass --
+  # there's no allow-list for these, unlike the interactions above. This also covers placing/
+  # scooping water or lava with a bucket (a real world-modifying action that isn't technically a
+  # "block place" event on its own, so it needs its own protection or it'd be a silent gap).
+  deny-build: true
+  deny-break: true
+
+  # a creeper/TNT/other explosion happening to go off inside the zone won't be allowed to actually
+  # damage any blocks there either -- otherwise "can't be broken by players" would still leave the
+  # area griefable by explosions. This does not stop the explosion itself (sound/particles/knockback
+  # still happen), only the block damage.
+  deny-explosion-damage: true
+
+messages:
+  build-denied: "&cYou can't build here -- this area is protected."
+  break-denied: "&cYou can't break blocks here -- this area is protected."
+  interact-denied: "&cYou can't do that here -- this area is protected."
